@@ -8,26 +8,28 @@ import Prelude hiding (Monad(..))
 import GHC.Exts ( Constraint )
 import GHC.Types
 
-{-| Specifies "parametric effect monads" which are essentially monads but
-     annotated by a type-level monoid formed by 'Plus' and 'Unit' -}
+-- Graded monad structure
 class GradedMonad (m :: d -> Type -> Type) where
 
-   {-| Effect of a trivially effectful computation |-}
+   -- Pomonoid effect algebra
+   -- Identity elemement - effect of a trivially effectful computation |-}
    type Unit m :: d
-   {-| Cominbing effects of two subcomputations |-}
+   -- Monoid multiplication - combining effects of two subcomputations |-}
    type Seq m (r :: d) (s :: d) :: d
 
-   {-| 'Inv' provides a way to give instances of 'Effect' their own constraints for '>>=' -}
+   -- Partial order as a relation
+   type Sub m (r :: d) (s :: d) :: Constraint
+
+   -- 'Inv' provides a way to give instances of 'GradedMonad' their
+   -- own constraints for '>>=' if needed.
    type Inv m (r :: d) (s :: d) :: Constraint
    type Inv m r s = ()
 
-   type Sub m (r :: d) (s :: d) :: Constraint
-
-   {-| Effect-parameterised version of 'return'. Annotated with the 'Unit m' effect,
+   {-| Graded version of 'return'. Annotated with the 'Unit m' effect,
     denoting pure compuation -}
    return :: a -> m (Unit m) a
 
-   {-| Effect-parameterise version of '>>=' (bind). Combines
+   {-| Graded version of '>>=' (bind). Combines
     two effect annotations 'f' and 'g' on its parameter computations into 'Plus' -}
 
    (>>=) :: m r a -> (a -> m s b) -> m (Seq m r s) b
@@ -35,6 +37,7 @@ class GradedMonad (m :: d -> Type -> Type) where
    (>>) :: m r a -> m s b -> m (Seq m r s) b
    x >> y = x >>= (\_ -> y)
 
+   {-| Graded counterpart to pre-ordering -}
    sub :: Sub m r s => m r a -> m s a
 
 fail = undefined
