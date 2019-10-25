@@ -3,6 +3,8 @@
 This code is best for interacting with via `ghci`, i.e., this is not a standalone application, but rather an explanation
 of and idea about graded monads, effects, and dataflow.
 
+(This code has been tested with at least GHC 8.6.2 but it should work with versions at least as early as 8.2.*)
+
 Running
 
      cabal build
