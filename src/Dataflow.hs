@@ -16,6 +16,8 @@
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 
+module Dataflow where
+
 import Prelude hiding (Monad(..))
 import qualified Prelude as M
 import GradedMonad
