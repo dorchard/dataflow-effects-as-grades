@@ -1,6 +1,8 @@
 {-# LANGUAGE KindSignatures, TypeFamilies, ConstraintKinds, PolyKinds, MultiParamTypeClasses #-}
 
--- Taken from the `effect-monad` package.
+-- Similar to what is provided in the `effect-monad` 
+-- package (https://hackage.haskell.org/package/effect-monad) 
+-- but with some naming that is convenient for our purposes.
 
 module GradedMonad where
 
@@ -12,9 +14,9 @@ import GHC.Types
 class GradedMonad (m :: d -> Type -> Type) where
 
    -- Pomonoid effect algebra
-   -- Identity elemement - effect of a trivially effectful computation |-}
+   -- Identity elemement - effect of a trivially effectful computation
    type Unit m :: d
-   -- Monoid multiplication - combining effects of two subcomputations |-}
+   -- Monoid multiplication - combining effects of two subcomputations
    type Seq m (r :: d) (s :: d) :: d
 
    -- Partial order as a relation
