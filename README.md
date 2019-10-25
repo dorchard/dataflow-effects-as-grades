@@ -1,3 +1,5 @@
+(by Andrej Ivaskovic, Alan Mycroft (University of Cambridge) and Dominic Orchard (University of Kent)).
+
 This code is best for interacting with via `ghci`, i.e., this is not a standalone application, but rather an explanation
 of and idea about graded monads, effects, and dataflow.
 
