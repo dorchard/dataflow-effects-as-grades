@@ -68,7 +68,8 @@ type instance Cmp (v :: Symbol) (u :: Symbol) = CmpSymbol v u
 -- Gen / get
 
 class Gen (v :: Symbol) dIn dOut | v dIn -> dOut
-instance Gen v dIn (v ': dIn) -- add `v` onto the incoming set `dIn`
+-- add `v` onto the incoming set `dIn`
+instance Gen v dIn (v ': dIn)
 
 getX :: MultiState (Gen "x") Int
 getX = MultiState get
@@ -85,7 +86,8 @@ getR = MultiState (lift (lift get))
 -- Kill / put
 
 class Kill (v :: Symbol) (dIn :: [Symbol]) (dOut :: [Symbol]) | v dIn -> dOut
-instance (dIn :\ v) ~ dOut => Kill v dIn dOut -- remove `v` from `dIn` to get `dOut`
+-- remove all `v` from `dIn` to get `dOut`
+instance (dIn :\ v) ~ dOut => Kill v dIn dOut
 
 putX :: Int -> MultiState (Kill "x") ()
 putX x = MultiState (put x)
@@ -99,8 +101,8 @@ putZ x = MultiState (lift (lift (put x)))
 putR :: Int -> MultiState (Kill "r") ()
 putR x = MultiState (lift (lift (lift (put x))))
 
---- Reify the constraint at a particular program point applying the
---boundary information (empty set)
+-- Reify the constraint at a particular program point applying the
+-- boundary information (empty set)
 
 data Set s = Set -- proxy with phantom type parameter
 
@@ -108,7 +110,7 @@ atProgramPoint :: r '[] dOut => MultiState r x -> Set (AsSet dOut)
 atProgramPoint (MultiState _) = Set
 
 -- Inverse example (kill :|> gen is the identity on the dataflow values)
-inverseEample = do
+inverseExample = do
   putX 42
   x <- getX
   return ()
