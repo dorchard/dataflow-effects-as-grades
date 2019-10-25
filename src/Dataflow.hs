@@ -40,6 +40,8 @@ ifThenElse False _ y = y
 data MultiState (func :: [Symbol] -> [Symbol] -> Constraint) x =
   MultiState { unMultiState :: StateT Int (StateT Int (StateT Int (StateT Int Identity))) x }
 
+-- The operations just wrap the underlying monad, packing and unpacking
+-- the data type wrapped via its constructor and deconstructor.
 instance GradedMonad MultiState where
    type Unit MultiState     = Id
    type Seq  MultiState r s = r :|> s
@@ -102,9 +104,10 @@ putZ x = MultiState (lift (lift (put x)))
 putR :: Int -> MultiState (Kill "z") ()
 putR x = MultiState (lift (lift (lift (put x))))
 
---- Reify the constraint at a particular program point
+--- Reify the constraint at a particular program point applying the
+--boundary information (empty set)
 
-data Set s = Set
+data Set s = Set -- proxy with phantom type parameter
 
 atProgramPoint :: r '[] dOut => MultiState r x -> Set (AsSet dOut)
 atProgramPoint (MultiState _) = Set
@@ -119,15 +122,17 @@ example3 g  = do
 
 -- Force calculation of the type by passing in the "empty set"
 
--- Get's inferred as Proxy (Set '["x", "y"])
+-- Get's inferred as Set '["x", "y"]
 example3' = atProgramPoint (example3 (return ()))
+
+-- Another example.
 
 exampleAlt = do
   (x :: Int) <- getX
   y <- getY
   alt (x >= y) getZ getR
 
--- Get's inferred as Proxy '["r", "x", "y", "z"]
+-- Get's inferred as Set '["r", "x", "y", "z"]
 exampleAlt' = atProgramPoint exampleAlt
 
 -------------------------------------------------

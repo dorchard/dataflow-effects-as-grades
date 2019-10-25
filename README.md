@@ -21,3 +21,11 @@ You can then interact via ghci, e.g.
 
 	*Dataflow> :t example3'
 	example3' :: Set '["x", "y"]
+
+	*Dataflow> :t exampleAlt
+	exampleAlt
+		:: MultiState
+			(Gen "x" :|> (Gen "y" :|> Alt (Gen "z") (Gen "r"))) Int
+
+	*Dataflow> :t exampleAlt'
+	exampleAlt' :: Set '["r", "x", "y", "z"]
