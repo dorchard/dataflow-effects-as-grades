@@ -96,7 +96,7 @@ putY x = MultiState (lift (put x))
 putZ :: Int -> MultiState (Kill "z") ()
 putZ x = MultiState (lift (lift (put x)))
 
-putR :: Int -> MultiState (Kill "z") ()
+putR :: Int -> MultiState (Kill "r") ()
 putR x = MultiState (lift (lift (lift (put x))))
 
 --- Reify the constraint at a particular program point applying the
