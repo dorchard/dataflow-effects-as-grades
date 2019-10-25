@@ -32,7 +32,7 @@ class GradedMonad (m :: d -> Type -> Type) where
    return :: a -> m (Unit m) a
 
    {-| Graded version of '>>=' (bind). Combines
-    two effect annotations 'f' and 'g' on its parameter computations into 'Plus' -}
+    two effect annotations 'f' and 'g' on its parameter computations via 'Seq' -}
 
    (>>=) :: m r a -> (a -> m s b) -> m (Seq m r s) b
 
