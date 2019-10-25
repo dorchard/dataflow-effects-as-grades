@@ -85,12 +85,7 @@ getR = MultiState (lift (lift get))
 -- Kill / put
 
 class Kill (v :: Symbol) (dIn :: [Symbol]) (dOut :: [Symbol]) | v dIn -> dOut
-instance Remove dIn v dOut => Kill v dIn dOut -- remove `v` from `dIn` to get `dOut`
-
-class Remove (xs :: [Symbol]) (x :: Symbol) (ys :: [Symbol]) | xs x -> ys
-instance Remove '[] x '[]
-instance Remove (x ': xs) x xs
-instance Remove xs x ys => Remove (y ': xs) x (y ': ys)
+instance (dIn :\ v) ~ dOut => Kill v dIn dOut -- remove `v` from `dIn` to get `dOut`
 
 putX :: Int -> MultiState (Kill "x") ()
 putX x = MultiState (put x)
@@ -112,10 +107,16 @@ data Set s = Set -- proxy with phantom type parameter
 atProgramPoint :: r '[] dOut => MultiState r x -> Set (AsSet dOut)
 atProgramPoint (MultiState _) = Set
 
+-- Inverse example (kill :|> gen is the identity on the dataflow values)
+inverseEample = do
+  putX 42
+  x <- getX
+  return ()
+
 -- Example 3
 
 example3 g  = do
-  x <- getX;
+  x <- getX
   y <- getY
   putZ (x + y)
   g
