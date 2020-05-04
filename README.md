@@ -5,7 +5,7 @@ Dominic Orchard (University of Kent) appearing at FSCD 2020.
 This code is associated with Section 4.4 and Appendix B of the paper.
 
 This code is best for interacting with via `ghci`, i.e., this is not a
-standalone application, but rather an explanation of and idea about
+standalone application, but rather an explanation of an idea about
 graded monads, effects, and dataflow.
 
 (This code has been tested with at least GHC 8.10.1 but it should work
