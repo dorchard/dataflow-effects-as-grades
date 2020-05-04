@@ -1,5 +1,5 @@
--- By Andrej Ivaskovic, Alan Mycroft, and Dominic Orchard
--- Copyright 2019
+--- By Andrej Ivaskovic, Alan Mycroft, and Dominic Orchard
+--- Copyright 2020
 
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE KindSignatures #-}
@@ -42,6 +42,8 @@ data MultiState (func :: [Symbol] -> [Symbol] -> Constraint) x =
 
 -- The operations just wrap the underlying monad, packing and unpacking
 -- the data type wrapped via its constructor and deconstructor.
+-- (corresponds to the MultiState_triv in the paper)
+
 instance GradedMonad MultiState where
    type Unit MultiState     = Id
    type Seq  MultiState r s = r :|> s
@@ -117,7 +119,7 @@ inverseExample = do
 
 -- Example 3
 
-example3 g  = do
+exm3 g  = do
   x <- getX
   y <- getY
   putZ (x + y)
@@ -126,7 +128,7 @@ example3 g  = do
 -- Force calculation of the type by passing in the "empty set"
 
 -- Get's inferred as Set '["x", "y"]
-example3' = atProgramPoint (example3 (return ()))
+exm3' = atProgramPoint (exm3 (return ()))
 
 -- Another example.
 

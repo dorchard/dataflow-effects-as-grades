@@ -1,7 +1,7 @@
 {-# LANGUAGE KindSignatures, TypeFamilies, ConstraintKinds, PolyKinds, MultiParamTypeClasses #-}
 
--- Similar to what is provided in the `effect-monad` 
--- package (https://hackage.haskell.org/package/effect-monad) 
+-- Similar to what is provided in the `effect-monad`
+-- package (https://hackage.haskell.org/package/effect-monad)
 -- but with some naming that is convenient for our purposes.
 
 module GradedMonad where
